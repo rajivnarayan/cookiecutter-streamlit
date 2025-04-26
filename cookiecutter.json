@@ -1,12 +1,23 @@
 {
     "project_name":"streamlit_app",
-    "author_name":"Andy McDonald",
+    "author":"Rajiv Narayan",
+    "author_email":"askrajiv@gmail.com",
+    "author_github_handle":"rajivnarayan",
+    "project_version":"0.1.0",
     "project_slug":"{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
     "project_description":"This is my awesome streamlit app.",
-    "include_streamlit_config":"y",
-    "include_streamlit_secrets":"y",
-    "include_pages_folder_for_multi_page_app":"y",
-    "include_tests":"y",
-    "include_src_directory":"y"
-
+    "include_streamlit_config": ["y", "n"],
+    "include_streamlit_secrets": ["y", "n"],
+    "include_pages_folder_for_multi_page_app": ["y", "n"],
+    "include_tests": ["y", "n"],
+    "include_src_directory": ["y", "n"],
+    "include_docker_file": ["y", "n"],
+    "include_devcontainer": ["y", "n"],
+    "license": [
+        "Apache Software License 2.0",
+        "GNU General Public License v3",
+        "MIT license",
+        "BSD license",
+        "Not open source"
+      ]
 }

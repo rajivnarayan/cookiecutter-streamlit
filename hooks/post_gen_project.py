@@ -2,32 +2,58 @@ import os
 import shutil
 
 project_slug = "{{ cookiecutter.project_slug }}"
-base_path = os.path.join(os.getcwd())
+PROJECT_DIRECTORY = os.path.realpath(os.path.curdir)
 
-def remove(file_path):
-    if os.path.isfile(file_path):
-        os.remove(file_path)
-    if os.path.isdir(file_path):
-        shutil.rmtree(file_path)
+def remove(rel_filepath: str) -> None:
+    filepath = os.path.join(PROJECT_DIRECTORY, rel_filepath)
+    if os.path.isfile(filepath):
+        os.remove(filepath)
+    if os.path.isdir(filepath):
+        shutil.rmtree(filepath)
 
-
-
+def move(src: str, target: str) -> None:
+    srcpath = os.path.join(PROJECT_DIRECTORY, src)
+    targetpath = os.path.join(PROJECT_DIRECTORY, target)   
+    if os.path.isfile(srcpath):
+        os.rename(srcpath, targetpath)
+    if os.path.isdir(srcpath):
+        shutil.move(srcpath, targetpath)
 
 if "{{ cookiecutter.include_streamlit_config }}" != 'y':
-    remove(os.path.join(base_path, '.streamlit', 'config.toml'))
+    remove(os.path.join('.streamlit', 'config.toml'))
 
 if "{{ cookiecutter.include_streamlit_secrets }}" != 'y':
-    remove(os.path.join(base_path, '.streamlit', '.secrets.toml'))
+    remove(os.path.join('.streamlit', '.secrets.toml'))
 
 if "{{ cookiecutter.include_pages_folder_for_multi_page_app }}" != 'y':
-    remove(os.path.join(base_path, 'pages'))
+    remove('pages')
 
 if "{{ cookiecutter.include_tests }}" != 'y':
-    remove(os.path.join(base_path, 'tests'))
+    remove('tests')
 
 if "{{ cookiecutter.include_src_directory }}" != 'y':
-    remove(os.path.join(base_path, 'src'))
+    remove('src')
+
+if "{{ cookiecutter.include_docker_file }}" != 'y':
+    remove('Dockerfile')
+
+if "{{ cookiecutter.include_devcontainer }}" != 'y':
+    remove('.devcontainer')
+
+LICENSES = {
+    "Apache Software License 2.0" : "LICENSE_APACHE.txt",
+    "GNU General Public License v3" : "LICENSE_GPL.txt",
+    "MIT license" : "LICENSE_MIT.txt",
+    "BSD license" : "LICENSE_BSD.txt",
+    }
+
+for license_name, license_file in LICENSES.items():
+    if "{{cookiecutter.license}}" == license_name:
+        move(license_file, "LICENSE.txt")
+    else:
+        remove(license_file)
+
 
 if __name__ == '__main__':
-    print(f'Streamlit App successfully created at: {os.path.join(base_path)}')
+    print(f'Streamlit App successfully created at: {os.path.join(PROJECT_DIRECTORY)}')
     
