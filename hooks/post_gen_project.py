@@ -1,5 +1,6 @@
 import os
 import shutil
+import subprocess
 
 project_slug = "{{ cookiecutter.project_slug }}"
 PROJECT_DIRECTORY = os.path.realpath(os.path.curdir)
@@ -53,6 +54,11 @@ for license_name, license_file in LICENSES.items():
     else:
         remove(license_file)
 
+# generate empty .env file
+subprocess.call(['touch', '.env'])
+
+# generate uv.lock
+subprocess.call(['uv', 'lock'])
 
 if __name__ == '__main__':
     print(f'Streamlit App successfully created at: {os.path.join(PROJECT_DIRECTORY)}')
