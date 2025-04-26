@@ -1,0 +1,39 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/docker-existing-dockerfile
+{
+	"name": "{{cookiecutter.project_name}}",
+	"build": {
+		// Sets the run context to one level up instead of the .devcontainer folder.
+		"context": "..",
+		// Update the 'dockerFile' property if you aren't using the standard 'Dockerfile' filename.
+		"dockerfile": "../Dockerfile",
+		"args": {
+			"BUILDKIT_INLINE_CACHE": "0"
+		}
+	},
+	// Use 'postCreateCommand' to run commands after the container is created.
+    "postCreateCommand": "./.devcontainer/postCreateCommand.sh",	
+//	"mounts": [
+//		"source=${env:HOME}${env:USERPROFILE}/.aws,target=/root/.aws,type=bind"		
+//	],
+	"runArgs": ["--env-file",".env"],
+	"postAttachCommand": {
+		"server": "uv run streamlit run app.py --server.enableCORS false --server.enableXsrfProtection false"
+	  },
+	  "forwardPorts": [
+		8501
+	  ],
+	// Configure tool-specific properties.
+	"customizations": {
+		"vscode": {
+			"extensions": ["ms-python.python", "editorconfig.editorconfig"],
+			"settings": {
+				"python.testing.pytestArgs": ["tests"],
+				"python.testing.unittestEnabled": false,
+				"python.testing.pytestEnabled": true,
+				"python.defaultInterpreterPath": "/workspaces/{{cookiecutter.project_name}}/.venv/bin/python",
+				"python.testing.pytestPath": "/workspaces/{{cookiecutter.project_name}}/.venv/bin/pytest"
+			}
+		}
+	}
+}
