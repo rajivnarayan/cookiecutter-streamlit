@@ -11,29 +11,31 @@
 			"BUILDKIT_INLINE_CACHE": "0"
 		}
 	},
-	// Use 'postCreateCommand' to run commands after the container is created.
-    "postCreateCommand": "./.devcontainer/postCreateCommand.sh",	
-//	"mounts": [
-//		"source=${env:HOME}${env:USERPROFILE}/.aws,target=/root/.aws,type=bind"		
-//	],
-	"runArgs": ["--env-file",".env"],
 	"postAttachCommand": {
-		"server": "uv run streamlit run app.py --server.enableCORS false --server.enableXsrfProtection false"
+		"server": "uv run streamlit run /app/app.py"
 	  },
 	  "forwardPorts": [
 		8501
 	  ],
-	// Configure tool-specific properties.
-	"customizations": {
-		"vscode": {
-			"extensions": ["ms-python.python", "editorconfig.editorconfig"],
-			"settings": {
-				"python.testing.pytestArgs": ["tests"],
-				"python.testing.unittestEnabled": false,
-				"python.testing.pytestEnabled": true,
-				"python.defaultInterpreterPath": "/workspaces/{{cookiecutter.project_name}}/.venv/bin/python",
-				"python.testing.pytestPath": "/workspaces/{{cookiecutter.project_name}}/.venv/bin/pytest"
-			}
-		}
-	}
+	// Pass arguments to Docker container
+	"runArgs": ["--env-file",".env"],
+    // Configure tool-specific properties.
+    "customizations": {
+        "vscode": {
+            "extensions": ["ms-python.python", "editorconfig.editorconfig"],
+            "settings": {
+                "python.testing.pytestArgs": ["tests"],
+                "python.testing.unittestEnabled": false,
+                "python.testing.pytestEnabled": true,
+                "python.defaultInterpreterPath": "/workspaces/{{cookiecutter.project_name}}/.venv/bin/python",
+                "python.testing.pytestPath": "/workspaces/{{cookiecutter.project_name}}/.venv/bin/pytest"
+            }
+        }
+    }	
+	// specify non-root user if default docker user is root
+// "remoteUser": "node",
+//	"mounts": [
+//		"source=${env:HOME}${env:USERPROFILE}/.aws,target=/root/.aws,type=bind"
+//	],
+
 }
